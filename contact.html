@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="alley-bg"></div>
+
+  <!-- Close button (back to home) -->
+  <a class="close-btn" href="index.html" aria-label="Back to home"><img src="assets/exit-x.png" alt=""></a>
+
+  <main class="contact-page">
+
+    <!-- TITLE: starts in the top right corner. Make it longer or shorter with --title-w in css/style.css -->
+    <h1 class="contact-title"><img src="assets/contacts-title.png" alt="Contacts"></h1>
+
+    <!-- CHARACTER holding the phone. The phone lights up when the cursor is over it,
+         and clicking it opens your Instagram. -->
+    <div class="contact-me">
+      <img class="me-char" src="assets/character.png" alt="Me holding my phone with the Instagram logo on it">
+
+      <!-- invisible click area shaped like the phone -->
+      <a class="phone-hit" href="https://www.instagram.com/radiatoraa/" target="_blank" rel="noopener"
+         aria-label="Open my Instagram" style="clip-path: polygon(28.0% 0.3%, 100.3% 15.6%, 61.3% 98.7%, 2.0% 83.4%)"></a>
+
+      <!-- the same phone again, lying exactly on top; it is what glows -->
+      <img class="phone-glow" src="assets/phone-glow.png" alt="" aria-hidden="true">
+    </div>
+
+  </main>
+
+</body>
+</html>

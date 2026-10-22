@@ -1,0 +1,717 @@
+/* =========================================================
+   PORTFOLIO – shared styles for all pages
+   Sections: 1) basics  2) home  3) projects  4) ideas  5) contact
+   ========================================================= */
+
+/* ---------- 1) BASICS ---------- */
+:root {
+  --paper: #f5f0e0;
+  --ink: #1b1b1b;
+  --spray: #ff4d6d;      /* accent colour – change to taste */
+  --tape: rgba(240, 220, 150, 0.85);
+  --marker: "Permanent Marker", "Comic Sans MS", cursive;
+  --hand: "Caveat", "Comic Sans MS", cursive;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: var(--hand);
+  font-size: 22px;
+  color: var(--paper);
+  background: #1a1512;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Placeholder for the graffiti titles you will draw.
+   When you have your PNG, replace the <h1 class="graffiti">…</h1> with
+   <img class="graffiti-img" src="assets/your-title.png" alt="Finished projects"> */
+.graffiti {
+  font-family: var(--marker);
+  margin: 0;
+  line-height: 0.95;
+  color: var(--paper);
+  text-shadow: 3px 3px 0 var(--spray), 6px 6px 0 rgba(0, 0, 0, 0.5);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.graffiti-img { display: block; max-width: 100%; height: auto; }
+
+/* Close / back button (top right on every sub page) */
+.close-btn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 100;
+  width: 62px;
+  height: 62px;
+  display: block;
+  padding: 0;
+  line-height: 0;
+  transform: rotate(6deg);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.close-btn img { display: block; width: 100%; height: 100%; }
+.close-btn:hover, .close-btn:focus-visible {
+  transform: rotate(-8deg) scale(1.12);
+  outline: none;
+}
+
+/* The dark alley backdrop used on EVERY page except the home page.
+   It is the home page picture, darkened. Darker/lighter: change the two numbers 0.72 and 0.82. */
+.alley-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(rgba(10, 8, 6, 0.72), rgba(10, 8, 6, 0.82)),
+    url("../assets/alley.jpg") center / cover no-repeat;
+}
+
+/* ---------- 2) HOME ---------- */
+/* SIZES – change these numbers to resize things on the home page.
+   vw = % of screen width, vh = % of screen height. */
+:root {
+  --title-width: clamp(300px, 58vw, 1150px);  /* "portfolio" graffiti image width */
+  --title-ratio: 2.6;                          /* shape of the title: 2.2 = original, higher = more stretched out */
+  --me-height: 56vh;                           /* your character's height */
+  --book-width: clamp(80px, 7.5vw, 150px);      /* sketchbook (closed) */
+  --phone-width: clamp(64px, 6.5vw, 125px);     /* phone */
+  --laptop-width: clamp(100px, 10vw, 200px);    /* laptop (digital projects) */
+  --bucket-width: clamp(56px, 6vw, 118px);      /* paint bucket (handmade projects) */
+}
+
+.home {
+  position: relative;
+  height: 100vh;
+  min-height: 560px;
+  overflow: hidden;
+  background: url("../assets/alley.jpg") center / cover no-repeat;
+}
+.home::after {               /* soft vignette so the drawings pop */
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.home-title-wrap {
+  position: absolute;
+  z-index: 5;
+  top: 1%;
+  left: 50%;
+  margin: 0;
+  transform: translateX(-50%) rotate(-2deg);
+  line-height: 0;
+}
+.home-title {
+  display: block;
+  width: var(--title-width);
+  aspect-ratio: var(--title-ratio);   /* width ÷ height; bigger number = flatter, more stretched out */
+  height: auto;
+  object-fit: fill;                   /* fill = stretch the drawing to exactly this shape */
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.5));
+}
+
+.me {                          /* the centrepiece drawing */
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 1%;
+  transform: translateX(-50%);
+  height: var(--me-height);
+  filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.55));
+}
+
+.item {
+  position: absolute;
+  z-index: 6;
+  display: block;
+  animation: float 4.5s ease-in-out infinite;
+}
+.item .label {
+  position: absolute;
+  left: 50%;
+  bottom: -34px;
+  transform: translateX(-50%) rotate(-3deg);
+  font-family: var(--marker);
+  font-size: 22px;
+  white-space: nowrap;
+  color: var(--paper);
+  text-shadow: 2px 2px 0 var(--ink);
+  padding: 3px 14px 5px;
+  border-radius: 10px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.item:hover .label, .item:focus-visible .label { opacity: 1; }
+.item:hover, .item:focus-visible { z-index: 30; }      /* hovered item (and its label) always on top of the others */
+.item:focus-visible { outline: none; }
+
+@keyframes float {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -12px; }
+}
+
+/* positions (percent of the screen) – nudge these to rearrange */
+/* Positions are measured from your CHARACTER (he is 1.0 tall), so the items stay around him on every screen.
+   Each item's CENTRE sits at:  --dx = how far sideways from him,  --dy = how far down from the top of his head.
+   Bigger --dx = further out.  Bigger --dy = lower.  (max() stops an item from ever overlapping him on narrow screens.) */
+.home {
+  --near: calc(var(--me-height) * 0.2 + 2vh);          /* edge of his body + a little gap */
+  --me-top: calc(99% - var(--me-height));              /* top of his head */
+}
+.item { transform: translate(-50%, -50%); }             /* so left/top below mean the CENTRE of the item */
+.item-book   { --dx: 0.41; --dy: 0.17; width: var(--book-width);   animation-delay: 0s;
+  left: calc(50% - max(var(--dx) * var(--me-height), var(--near) + var(--book-width) / 2));
+  top:  calc(var(--me-top) + var(--dy) * var(--me-height)); }
+.item-laptop { --dx: 0.42; --dy: 0.52; width: var(--laptop-width); animation-delay: 3.2s;
+  left: calc(50% - max(var(--dx) * var(--me-height), var(--near) + var(--laptop-width) / 2));
+  top:  calc(var(--me-top) + var(--dy) * var(--me-height)); }
+.item-bucket { --dx: 0.44; --dy: 0.20; width: var(--bucket-width); animation-delay: 0.7s;
+  left: calc(50% + max(var(--dx) * var(--me-height), var(--near) + var(--bucket-width) / 2));
+  top:  calc(var(--me-top) + var(--dy) * var(--me-height)); }
+.item-phone  { --dx: 0.44; --dy: 0.62; width: var(--phone-width);  animation-delay: 1.2s;
+  left: calc(50% + max(var(--dx) * var(--me-height), var(--near) + var(--phone-width) / 2));
+  top:  calc(var(--me-top) + var(--dy) * var(--me-height)); }
+
+/* Items made of two pictures: the second one fades in on hover */
+.swap { position: relative; width: 100%; }
+.swap img { display: block; width: 100%; height: auto; }
+.swap img + img { position: absolute; opacity: 0; }
+
+/* --- sketchbook: closed book swaps to the open book on hover --- */
+.book { aspect-ratio: 445 / 404; }
+.book img { transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.3); }
+.book .book-closed { filter: drop-shadow(3px 5px 4px rgba(0, 0, 0, 0.55)); }
+.book .book-open {
+  width: 150%;              /* open book is bigger than the closed one */
+  left: -25%;
+  top: 50%;
+  transform: translateY(-50%) scale(0.8) rotate(-4deg);
+  filter: drop-shadow(3px 5px 4px rgba(0, 0, 0, 0.55));
+}
+.item-book:hover .book-closed, .item-book:focus-visible .book-closed { opacity: 0; transform: scale(0.9); }
+.item-book:hover .book-open, .item-book:focus-visible .book-open {
+  opacity: 1;
+  transform: translateY(-50%) scale(1) rotate(0deg);
+}
+
+
+/* --- phone: screen turns on (picture swap) and glows on hover --- */
+.phone { aspect-ratio: 528 / 507; }
+.phone img { transition: opacity 0.2s ease; }
+.phone .phone-on { width: 100.6%; left: 0; top: 0; }
+.phone { filter: drop-shadow(3px 5px 4px rgba(0, 0, 0, 0.55)); transition: filter 0.3s ease; }
+.item-phone:hover .phone-off, .item-phone:focus-visible .phone-off { opacity: 0; }
+.item-phone:hover .phone-on,  .item-phone:focus-visible .phone-on  { opacity: 1; }
+.item-phone:hover .phone, .item-phone:focus-visible .phone {
+  filter: drop-shadow(0 0 10px rgba(255, 250, 200, 0.95)) drop-shadow(0 0 28px rgba(255, 210, 90, 0.8));
+}
+
+
+/* --- laptop: closed laptop swaps to the open one on hover (the screen "opens up") --- */
+.laptop { aspect-ratio: 666 / 612; filter: drop-shadow(3px 5px 4px rgba(0, 0, 0, 0.55)); transition: filter 0.3s ease; }
+.laptop img { transition: opacity 0.2s ease, transform 0.6s cubic-bezier(0.3, 1.4, 0.5, 1); }
+.laptop .laptop-open { left: 0; top: 0; opacity: 0; transform: scaleY(0.45); transform-origin: 50% 100%; }
+.item-laptop:hover .laptop-closed, .item-laptop:focus-visible .laptop-closed { opacity: 0; }
+.item-laptop:hover .laptop-open, .item-laptop:focus-visible .laptop-open { opacity: 1; transform: scaleY(1); }
+.item-laptop:hover .laptop, .item-laptop:focus-visible .laptop {
+  filter: drop-shadow(0 0 10px rgba(120, 220, 255, 0.85)) drop-shadow(3px 5px 4px rgba(0, 0, 0, 0.55));
+}
+
+/* --- paint bucket: brush sticking out swaps to the brush dipped in on hover --- */
+.bucket { aspect-ratio: 434 / 691; filter: drop-shadow(3px 5px 4px rgba(0, 0, 0, 0.55)); transition: filter 0.3s ease; }
+.bucket img { transition: opacity 0.15s ease; }
+.bucket .bucket-in { left: 0; top: 0; opacity: 0; transform-origin: 50% 100%; }
+.item-bucket:hover .bucket-out, .item-bucket:focus-visible .bucket-out { opacity: 0; }
+.item-bucket:hover .bucket-in, .item-bucket:focus-visible .bucket-in { opacity: 1; animation: dip 0.45s ease-out; }
+
+@keyframes dip {
+  0%   { transform: translateY(-9%) scaleY(1.04); }
+  60%  { transform: translateY(2%) scaleY(0.97); }
+  100% { transform: translateY(0) scaleY(1); }
+}
+
+/* ---------- 3) PROJECTS ---------- */
+.page-head {
+  padding: 28px 32px 8px;
+}
+.page-head .graffiti { font-size: clamp(40px, 7vw, 96px); transform: rotate(-3deg); display: inline-block; }
+
+.collage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 32px 120px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 56px 44px;
+}
+
+.card {
+  position: relative;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 14px 14px 10px;
+  box-shadow: 6px 8px 0 rgba(0, 0, 0, 0.45);
+  transform: rotate(var(--tilt, -2deg));
+  transition: transform 0.25s ease;
+}
+.card:nth-child(4n+1) { --tilt: -2.5deg; }
+.card:nth-child(4n+2) { --tilt: 2deg; margin-top: 28px; }
+.card:nth-child(4n+3) { --tilt: -1deg; }
+.card:nth-child(4n+4) { --tilt: 3deg; margin-top: 18px; }
+.card:hover { transform: rotate(0deg) scale(1.04); z-index: 5; }
+
+.card::before {                 /* strip of tape */
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  width: 90px;
+  height: 28px;
+  background: var(--tape);
+  transform: translateX(-50%) rotate(-4deg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.card:nth-child(3n+2)::before { background: rgba(255, 77, 109, 0.75); transform: translateX(-50%) rotate(5deg); }
+.card:nth-child(3n+3) { background: #e9e2cf; outline: 3px dashed var(--ink); outline-offset: -9px; }
+
+/* Placeholder box – replace with <img src="assets/projects/yourfile.jpg" alt="…"> */
+.card .placeholder, .card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background:
+    repeating-linear-gradient(45deg, #ddd5bd 0 12px, #e9e2cf 12px 24px);
+  border: 2px solid var(--ink);
+  display: grid;
+  place-items: center;
+  font-family: var(--marker);
+  color: #6a6150;
+  font-size: 26px;
+}
+.card h2 {
+  font-family: var(--marker);
+  font-size: 26px;
+  margin: 12px 0 2px;
+}
+.card p { margin: 0 0 6px; font-size: 22px; }
+
+/* ---------- 4) IDEAS (notes pinned up on the dark alley wall) ---------- */
+.cork-page {
+  min-height: 100vh;
+  color: var(--ink);
+}
+.cork-page { position: relative; }
+.cork-page .page-head { padding: 24px 32px 0; text-align: center; }
+.page-title { margin: 0; line-height: 0; }
+.page-title img {
+  display: inline-block;
+  width: min(460px, 78vw);
+  height: auto;
+  filter: drop-shadow(4px 7px 6px rgba(0, 0, 0, 0.4));
+}
+.to-be-continued {
+  position: absolute;
+  right: 36px;
+  bottom: 28px;
+  width: min(280px, 46vw);
+  height: auto;
+  filter: drop-shadow(3px 5px 4px rgba(0, 0, 0, 0.4));
+  pointer-events: none;
+}
+.cork-page .graffiti { color: #fff; }
+
+.board {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 52px 190px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 80px 46px;
+}
+.note {
+  position: relative;
+  width: var(--w, 300px);
+  max-width: 100%;
+  background: var(--paper);
+  padding: 14px 14px 18px;
+  box-shadow: 4px 8px 12px rgba(0, 0, 0, 0.45);
+  transform: translate(var(--dx, 0), var(--dy, 0)) rotate(var(--tilt, 0deg));
+  transition: transform 0.25s ease;
+}
+.note:nth-child(5n+1) { --tilt: -3deg; --dx: 6px;   --dy: 0; }
+.note:nth-child(5n+2) { --tilt: 2deg;  --dx: -10px; --dy: 24px; }
+.note:nth-child(5n+3) { --tilt: -1.5deg; --dx: 14px; --dy: -12px; }
+.note:nth-child(5n+4) { --tilt: 3.5deg; --dx: -6px; --dy: 18px; }
+.note:nth-child(5n+5) { --tilt: -4deg; --dx: 8px;   --dy: -4px; }
+.note:hover { transform: translate(var(--dx), var(--dy)) rotate(0deg) scale(1.05); z-index: 10; }
+
+/* push pin holding the picture to the board (click goes through to the picture) */
+.note .pin {
+  position: absolute;
+  top: -44px;
+  left: var(--pinx, 50%);
+  width: 46px;
+  height: 67px;
+  margin-left: -20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  filter: drop-shadow(3px 5px 3px rgba(0, 0, 0, 0.45));
+  pointer-events: none;
+  z-index: 3;
+}
+.note .pin-red    { background-image: url("../assets/pins/pin-red.png"); }
+.note .pin-blue   { background-image: url("../assets/pins/pin-blue.png"); }
+.note .pin-yellow { background-image: url("../assets/pins/pin-yellow.png"); }
+.note .pin-green  { background-image: url("../assets/pins/pin-green.png"); }
+.note .pin-black  { background-image: url("../assets/pins/pin-black.png"); }
+
+.note .placeholder {
+  display: grid;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  place-items: center;
+  background: repeating-linear-gradient(-45deg, #ddd5bd 0 12px, #e9e2cf 12px 24px);
+  border: 2px solid var(--ink);
+  font-family: var(--marker);
+  color: #6a6150;
+  font-size: 26px;
+}
+.note img {
+  display: block;
+  width: 100%;
+  height: auto;          /* keeps each photo's own proportions */
+  border: 2px solid var(--ink);
+}
+.note p { margin: 8px 0 4px; font-size: 22px; text-align: center; }
+
+/* ---------- 5) CONTACT ---------- */
+.contact-page {
+  --title-w: min(66vw, 1150px);                 /* length of the title: it grows from the top right corner towards the left */
+  --char-h: min(88vh, 900px);                   /* height of the character */
+  min-height: 100vh; position: relative; overflow: hidden;
+}
+
+.contact-title {
+  position: absolute; top: 0; right: 0; z-index: 3;
+  width: var(--title-w); margin: 0; line-height: 0;
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.45));
+}
+.contact-title img { display: block; width: 100%; height: auto; }
+
+.contact-me {
+  position: absolute; left: 5%; bottom: 0; z-index: 2;
+  width: min(92vw, calc(var(--char-h) * 0.7101));   /* keeps the drawing's shape */
+  aspect-ratio: 0.7101;
+}
+.contact-me img { display: block; }
+.me-char { width: 100%; height: 100%; filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.55)); }
+
+/* the phone: invisible clickable shape + a copy of the phone that glows */
+.phone-hit, .phone-glow {
+  position: absolute;
+  left: 2.72%; top: 30.99%;
+  width: 22.91%; height: 29.16%;
+}
+.phone-hit { z-index: 2; cursor: pointer; outline: none; }
+.phone-glow {
+  z-index: 1; pointer-events: none;
+  transition: filter 0.25s ease;
+}
+.phone-hit:hover + .phone-glow,
+.phone-hit:focus-visible + .phone-glow,
+.phone-hit:active + .phone-glow {
+  filter: brightness(1.22) saturate(1.25)
+          drop-shadow(0 0 8px rgba(255, 236, 150, 0.95))
+          drop-shadow(0 0 24px rgba(255, 79, 154, 0.9))
+          drop-shadow(0 0 48px rgba(138, 60, 255, 0.8));
+}
+
+/* ---------- 6) DIGITAL PROJECTS (old-school computer desktop + plain Notepad windows) ---------- */
+.desk-page {
+  position: relative;
+  color: #000;
+  font-family: Tahoma, "MS Sans Serif", Verdana, Arial, sans-serif;
+  font-size: 14px;
+  min-height: 100vh;
+  padding-bottom: 190px;
+}
+.desk-page .to-be-continued { bottom: 62px; }      /* sits just above the taskbar */
+.desk { padding: 34px 20px 40px; }
+
+.desk-icons {                       /* little desktop icons on the left (decoration) */
+  position: fixed; left: 16px; top: 18px; z-index: 2;
+  display: flex; flex-direction: column; gap: 22px;
+}
+.desk-icons div {
+  width: 78px; text-align: center; color: #fff; font-size: 13px;
+  text-shadow: 1px 1px 0 #000;
+}
+.desk-icons span { display: block; font-size: 38px; line-height: 1.1; filter: drop-shadow(1px 2px 0 rgba(0,0,0,.4)); }
+
+/* window frame */
+.win {
+  width: min(var(--w, 820px), 100%);
+  margin: 0 auto 70px;
+  padding: 2px;
+  background: #c0c0c0;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf,
+              7px 9px 0 rgba(0, 0, 0, 0.32);
+  color: #000;
+}
+.desk .win:nth-of-type(odd)  { transform: translateX(3vw); }
+.desk .win:nth-of-type(even) { transform: translateX(-3vw); }
+.win-title {
+  display: flex; align-items: center; gap: 6px;
+  height: 22px; padding: 2px 3px 2px 4px;
+  background: #0000aa; color: #fff; font-weight: bold; font-size: 13px;
+}
+.win-ico {
+  width: 14px; height: 14px; flex: none;
+  background: linear-gradient(135deg, #ff4d6d 0 33%, #ffd23f 33% 66%, #2fa4ff 66%);
+  box-shadow: 0 0 0 1px #000;
+}
+.win-ico.folder { background: #ffd23f; }
+.win-ico.notepad-ico {                        /* little Notepad icon */
+  background:
+    linear-gradient(#23233a 0 3px, transparent 3px),
+    repeating-linear-gradient(transparent 0 2px, rgba(0, 0, 70, 0.45) 2px 3px),
+    #8fe3ec;
+  box-shadow: 0 0 0 1px #000;
+}
+.win-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.win-btns { display: flex; gap: 2px; }
+.win-btns b {
+  width: 16px; height: 14px; display: grid; place-items: center;
+  background: #c0c0c0; color: #000; font-size: 10px; line-height: 1;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080;
+}
+.win-btns b:last-child { margin-left: 2px; }
+.win-menu { display: flex; gap: 14px; padding: 3px 8px; font-size: 13px; }
+
+.win-body { display: flex; gap: 4px; padding: 4px; }
+
+.canvas-area {
+  flex: 1; min-width: 0;
+  display: grid; grid-template-columns: 1fr 17px; grid-template-rows: auto 17px;
+  background: #808080;
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;
+  padding: 2px;
+}
+.canvas {
+  line-height: 0; background: #fff; min-width: 0;
+}
+.canvas img { display: block; width: 100%; height: auto; }
+.canvas .placeholder {
+  display: grid; place-items: center; width: 100%;
+  aspect-ratio: var(--ar, 4 / 3);
+  background:                          /* the classic grey-and-white "empty canvas" squares */
+    conic-gradient(#d9d9d9 25%, #fff 0 50%, #d9d9d9 0 75%, #fff 0) 0 0 / 24px 24px;
+  font-family: Tahoma, Arial, sans-serif; font-size: 18px; color: #7a7a7a; line-height: 1.2;
+}
+.vscroll, .hscroll {
+  display: flex; background: conic-gradient(#c0c0c0 25%, #fff 0 50%, #c0c0c0 0 75%, #fff 0) 0 0 / 2px 2px;
+}
+.vscroll { flex-direction: column; justify-content: space-between; }
+.vscroll u { flex: 0 0 34%; background: #c0c0c0; margin-top: 4px; align-self: stretch;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080; }
+.hscroll { grid-column: 1; align-items: stretch; }
+.hscroll u { flex: 0 0 38%; background: #c0c0c0; margin-left: 4px;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080; }
+.hscroll b { margin-right: auto; }
+.hscroll b:last-child { margin-left: auto; margin-right: 0; }
+.vscroll b, .hscroll b {
+  width: 17px; height: 17px; flex: none; display: grid; place-items: center;
+  background: #c0c0c0; font-size: 7px; line-height: 1; font-weight: normal;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080;
+}
+.vscroll u, .hscroll u { display: none; }          /* plain Notepad scrollbars: just the arrows and the track */
+.corner {                                            /* little resize grip in the corner */
+  background:
+    linear-gradient(135deg, transparent 0 38%, #808080 38% 46%, #fff 46% 52%, transparent 52% 62%, #808080 62% 70%, #fff 70% 76%, transparent 76% 100%),
+    #c0c0c0;
+}
+
+.status { display: flex; gap: 3px; padding: 2px 4px 3px; font-size: 12px; }
+.status span {
+  padding: 2px 5px; min-height: 19px;
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #fff;
+}
+.st-main { flex: 1; }
+.st-box { width: 90px; }
+
+/* description box under each picture (Notepad "text area") */
+.win-desc {
+  margin: 0 4px 4px; padding: 12px 16px 14px;
+  background: #fff;
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;
+  font-family: "Lucida Console", "Courier New", monospace; color: #000;
+}
+.win-desc h2 { margin: 0 0 6px; font: bold 16px "Lucida Console", "Courier New", monospace; }
+.win-desc p { margin: 0; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
+.win-head { margin-bottom: 56px; }
+.head-body { display: flex; align-items: center; justify-content: center; padding: 10px 14px; background: #fff; margin: 3px;
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf; }
+.head-body h1 { margin: 0; width: 100%; line-height: 0; }
+.head-body h1 img { display: block; width: 100%; height: auto; }
+
+.taskbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  height: 38px; display: flex; align-items: center; gap: 6px; padding: 3px 4px;
+  background: #c0c0c0; color: #000; font: bold 13px Tahoma, Arial, sans-serif;
+  box-shadow: inset 0 1px #dfdfdf, 0 -1px #fff;
+}
+.start, .task {
+  height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 10px;
+  background: #c0c0c0;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080;
+}
+.task { font-weight: normal; width: 170px; background: repeating-conic-gradient(#c0c0c0 0 25%, #fff 0 50%) 0 0 / 2px 2px;
+  box-shadow: inset 1px 1px #0a0a0a, inset -1px -1px #fff, inset 2px 2px #808080; }
+.tray {
+  margin-left: auto; padding: 0 12px; height: 28px; display: flex; align-items: center; font-weight: normal;
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #fff;
+}
+
+/* ---------- 7) HANDMADE PROJECTS (black frames on the dark alley) ---------- */
+.gallery-page {
+  position: relative;
+  color: #222;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  min-height: 100vh;
+}
+.gallery-head { text-align: center; padding: 24px 20px 0; }
+.gallery-head h1 { margin: 0; line-height: 0; }
+.gallery-head h1 img {                 /* your graffiti title. Bigger/smaller: change 640px */
+  display: inline-block; width: min(640px, 90vw); height: auto;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.55));
+}
+
+.gallery {
+  max-width: 1400px; margin: 0 auto; padding: 50px 40px 200px;
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end;
+  gap: 130px 100px;
+}
+.piece {
+  position: relative; width: var(--w, 420px); max-width: 100%;
+  display: flex; flex-direction: column; align-items: center;
+}
+/* ---- plain black picture frames ----
+   The frame is drawn with CSS (no frame images). It takes the exact shape of your picture
+   (js/frames.js reads it automatically). Frame thickness: change --bw below. */
+.pframe {
+  --bw: clamp(10px, 1.7vw, 16px);                  /* thickness of the black frame */
+  position: relative;
+  box-sizing: content-box;
+  width: calc(100% - 2 * var(--bw));
+  aspect-ratio: var(--ar, 1);                       /* the picture area has the same shape as the picture */
+  border: var(--bw) solid #0a0a0a;
+  background: #0a0a0a;
+  box-shadow: 0 0 0 1px #2a2a2a, 0 16px 22px rgba(0, 0, 0, 0.6), 0 3px 6px rgba(0, 0, 0, 0.45);
+  transition: transform 0.35s ease;
+}
+.piece:hover .pframe { transform: translateY(-8px); }
+.pframe .layer { position: absolute; inset: 0; }
+.pic { position: absolute; inset: 0; overflow: hidden; }
+.pic img, .pic .placeholder { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pic .placeholder {
+  display: grid; place-items: center; text-align: center;
+  background: linear-gradient(135deg, #e9eef3, #f3e9e2 55%, #ecefe0);
+  font-style: italic; font-size: 26px; color: #8d8a80; letter-spacing: 0.05em;
+}
+
+/* description card under every frame – write the title and the text in your own words */
+.desc {
+  position: relative; margin-top: 26px; width: min(340px, 100%);
+  padding: 24px 18px 16px; background: #fbf7ea; border: 1px solid #d9d0b4;   /* top padding leaves room for the tape */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.25);
+  transform: rotate(-0.8deg);
+}
+.piece:nth-child(even) .desc { transform: rotate(0.9deg); }
+.desc::before {                                   /* your tape picture holds the card */
+  content: ""; position: absolute; top: -17px; left: 50%; width: 100px; aspect-ratio: 2.745; margin-left: -50px;
+  background: url("../assets/tape.png") center / 100% 100% no-repeat;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4)); transform: rotate(-3deg);
+}
+/* street / bubbly font (Londrina Solid, loaded from Google Fonts in handmade.html) */
+.desc h2 {
+  margin: 0 0 6px; font-family: "Londrina Solid", "Permanent Marker", Impact, sans-serif;
+  font-size: 31px; font-weight: 900; font-style: normal; letter-spacing: 0.02em; line-height: 1.02; color: #17140f;
+}
+.desc p {
+  margin: 0; min-height: 4.6em;                    /* keeps room for about 3-4 lines of text */
+  font-family: "Londrina Solid", "Permanent Marker", Impact, sans-serif;
+  font-size: 22px; font-weight: 400; letter-spacing: 0.025em; line-height: 1.12; color: #2b251d;
+}
+
+/* ---- tape on the corners of every frame (2 pieces per frame, 2 variants) ----
+   tape-a = top-left + bottom-right      tape-b = top-right + bottom-left
+   js/frames.js picks one at random for every picture. To fix one yourself, write
+   class="piece tape-a" (or tape-b) on the <article>. Tape size: change --tape-w. */
+.pframe { --tape-w: clamp(66px, 23%, 116px); }
+.pframe::before, .pframe::after {
+  content: ""; position: absolute; z-index: 4; pointer-events: none;
+  width: var(--tape-w); aspect-ratio: 2.745;
+  background: url("../assets/tape.png") center / 100% 100% no-repeat;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.5));
+}
+.piece:not(.tape-b) .pframe::before {                /* variant a: top-left */
+  left: calc(-1 * var(--bw) - var(--tape-w) / 2); top: calc(-1 * var(--bw) - var(--tape-w) / 5.5);
+  transform: rotate(calc(-45deg + var(--j1, 0deg)));
+}
+.piece:not(.tape-b) .pframe::after {                 /* variant a: bottom-right */
+  right: calc(-1 * var(--bw) - var(--tape-w) / 2); bottom: calc(-1 * var(--bw) - var(--tape-w) / 5.5);
+  transform: rotate(calc(-45deg + var(--j2, 0deg)));
+}
+.piece.tape-b .pframe::before {                      /* variant b: top-right */
+  right: calc(-1 * var(--bw) - var(--tape-w) / 2); top: calc(-1 * var(--bw) - var(--tape-w) / 5.5);
+  transform: rotate(calc(45deg + var(--j1, 0deg)));
+}
+.piece.tape-b .pframe::after {                       /* variant b: bottom-left */
+  left: calc(-1 * var(--bw) - var(--tape-w) / 2); bottom: calc(-1 * var(--bw) - var(--tape-w) / 5.5);
+  transform: rotate(calc(45deg + var(--j2, 0deg)));
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 700px) {
+  .close-btn { width: 52px; height: 52px; top: 12px; right: 12px; }
+  .page-head { padding: 20px 18px 4px; }
+  .gallery-head { padding-top: 56px; }                 /* leaves room for the red X on phones */
+  .collage { padding: 16px 18px 100px; gap: 44px 20px; }
+  .board { padding: 70px 30px 150px; gap: 90px 20px; }
+  .to-be-continued { right: 18px; bottom: 16px; }
+  :root { --title-width: 94vw; --title-ratio: 2.4; --me-height: 44vh; --book-width: 80px; --phone-width: 64px; --laptop-width: 92px; --bucket-width: 52px; }
+  .contact-page { --title-w: 94vw; --char-h: 70vh; }
+  .contact-title { top: 66px; }                     /* leaves room for the red X on phones */
+  .contact-me { left: 4%; }
+  /* labels grow toward the middle of the screen so they never get cut off at the edges */
+  .item .label { font-size: 18px; padding: 2px 10px 4px; }
+  .item-book .label, .item-laptop .label { left: 0; transform: rotate(-3deg); }
+  .item-bucket .label, .item-phone .label { left: auto; right: 0; transform: rotate(-3deg); }
+  .desk-icons { display: none; }
+  .desk { padding: 24px 10px 30px; }
+  .desk .win:nth-of-type(odd), .desk .win:nth-of-type(even) { transform: none; }
+  .gallery { padding: 70px 22px 140px; gap: 110px 40px; }
+}
+
+/* Respect people who turn animations off in their system settings */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+/* taller "Digital projects" title window */
+.head-body { padding: 50px 14px !important; }
+@media (max-width: 700px) {
+  .head-body { padding: 60px 8px !important; }
+}

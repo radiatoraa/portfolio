@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <main class="home">
+
+    <!-- TITLE: your graffiti "portfolio" drawing. Its size is set by --title-width in css/style.css -->
+    <h1 class="home-title-wrap"><img class="home-title" src="assets/portfolio-title.png" alt="Portfolio"></h1>
+
+    <!-- YOU (centrepiece). Replace assets/me.svg with your own drawing, e.g. assets/me.png -->
+    <img class="me" src="assets/me.png" alt="Drawing of me standing in the alley">
+
+    <!-- ITEM 1: sketchbook -> doodles and others (ideas.html).
+         Hover swaps the closed book for the open one (assets/book-closed.png / assets/book-open.png) -->
+    <a class="item item-book" href="ideas.html" aria-label="Doodles and others">
+      <div class="swap book">
+        <img class="book-closed" src="assets/book-closed.png" alt="">
+        <img class="book-open" src="assets/book-open.png" alt="">
+      </div>
+      <span class="label">doodles n others</span>
+    </a>
+
+    <!-- ITEM 2: phone -> contacts.
+         Hover swaps phone-off.png for phone-on.png (screen lights up) -->
+    <a class="item item-phone" href="contact.html" aria-label="Contact">
+      <div class="swap phone">
+        <img class="phone-off" src="assets/phone-off.png" alt="">
+        <img class="phone-on" src="assets/phone-on.png" alt="">
+      </div>
+      <span class="label">contacts</span>
+    </a>
+
+    <!-- ITEM 3 (left): LAPTOP -> digital projects.
+         Hover swaps the closed laptop for the open one (assets/laptop-closed.png / assets/laptop-open.png) -->
+    <a class="item item-laptop" href="digital.html" aria-label="Digital projects">
+      <div class="swap laptop">
+        <img class="laptop-closed" src="assets/laptop-closed.png" alt="">
+        <img class="laptop-open" src="assets/laptop-open.png" alt="">
+      </div>
+      <span class="label">digital projects</span>
+    </a>
+
+    <!-- ITEM 4 (right): PAINT BUCKET -> handmade projects.
+         Hover swaps the brush sticking out (assets/bucket-out.png) for the brush dipped in (assets/bucket-in.png) -->
+    <a class="item item-bucket" href="handmade.html" aria-label="Handmade projects">
+      <div class="swap bucket">
+        <img class="bucket-out" src="assets/bucket-out.png" alt="">
+        <img class="bucket-in" src="assets/bucket-in.png" alt="">
+      </div>
+      <span class="label">handmade projects</span>
+    </a>
+
+  </main>
+
+</body>
+</html>
